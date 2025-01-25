@@ -1,0 +1,53 @@
+name: FIRE Calculator CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Run linter
+      run: npm run lint
+      
+    - name: Run tests
+      run: npm test
+      
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Build and push Docker image
+      run: |
+        docker build -t fire-calculator:${{ github.sha }} .
+        az acr login --name ${{ secrets.AZURE_REGISTRY }}
+        docker tag fire-calculator:${{ github.sha }} ${{ secrets.AZURE_REGISTRY }}.azurecr.io/fire-calculator:${{ github.sha }}
+        docker push ${{ secrets.AZURE_REGISTRY }}.azurecr.io/fire-calculator:${{ github.sha }}
+    
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'fire-calculator-app'
+        images: '${{ secrets.AZURE_REGISTRY }}.azurecr.io/fire-calculator:${{ github.sha }}'
