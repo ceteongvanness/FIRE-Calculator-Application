@@ -1,127 +1,74 @@
 # FIRE Calculator Application
 
-## Project Overview
-Full-stack TypeScript application for FIRE (Financial Independence, Retire Early) calculations with comprehensive infrastructure management.
-
 ## Project Structure
 ```
 fire-calculator/
 │
-├── src/                   # Application source code
-│   ├── components/
-│   ├── pages/
-│   └── utils/
+├── src/                    # Source code
+│   ├── components/         # React components
+│   │   └── InputForm.tsx
+│   ├── pages/              # Next.js pages
+│   │   ├── index.tsx       # Main calculator page
+│   │   └── api/            # API routes
+│   ├── styles/             # CSS and styling
+│   └── utils/              # Utility functions
 │
-├── docker/                # Docker configurations
-│   ├── Dockerfile
-│   └── docker-compose.yml
+├── public/                 # Static assets
 │
-├── kubernetes/            # Kubernetes manifests
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   └── ingress.yaml
+├── infrastructure/         # DevOps configurations
+│   ├── terraform/          # Terraform IaC scripts
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   ├── ansible/            # Ansible playbooks
+│   │   └── deploy.yml
+│   └── kubernetes/         # K8s manifests
+│       ├── deployment.yaml
+│       └── service.yaml
 │
-├── terraform/             # Cloud Infrastructure
-│   ├── environments/
-│   └── modules/
+├── .github/                # GitHub Actions
+│   └── workflows/
+│       └── ci-cd.yml
 │
-├── ansible/               # Configuration Management
-│   ├── inventories/
-│   └── playbooks/
+├── docker/                 # Docker configurations
+│   └── Dockerfile
 │
-└── .github/               # CI/CD Workflows
-    └── workflows/
+├── tests/                  # Unit and integration tests
+│   ├── calculator.test.ts
+│   └── integration/
+│
+├── package.json
+├── next.config.js
+├── tsconfig.json
+└── README.md
 ```
 
-## Technology Stack
+## Key Directories
+- `src/`: Primary application source code
+- `infrastructure/`: DevOps configuration files
+- `.github/`: CI/CD workflow definitions
+- `tests/`: Application testing suite
+
+## Getting Started
+1. Clone repository
+2. Install dependencies: `npm install`
+3. Run development server: `npm run dev`
+
+## Deployment
+- Infrastructure: Terraform
+- Container: Docker
+- Orchestration: Kubernetes
+- CI/CD: GitHub Actions
+
+## Technologies
 - Frontend: Next.js, TypeScript
-- Backend: Node.js
-- Infrastructure: 
-  - Docker
-  - Kubernetes
-  - Terraform
-  - Ansible
-- Cloud: Azure
-
-## Prerequisites
-- Node.js 18+
-- Docker
-- Kubernetes Cluster
-- Terraform 1.0+
-- Ansible 2.10+
-- Azure CLI
-
-## Local Development
-```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-```
-
-## Docker Deployment
-```bash
-# Build Docker image
-docker build -t fire-calculator .
-
-# Run container
-docker-compose up
-```
-
-## Kubernetes Deployment
-```bash
-# Deploy to Kubernetes
-kubectl apply -f kubernetes/
-
-# Check deployment status
-kubectl get deployments
-kubectl get services
-```
-
-## Terraform Infrastructure
-```bash
-# Initialize Terraform
-terraform init \
-  -backend-config=environments/production/backend.tfvars
-
-# Plan infrastructure
-terraform plan \
-  -var-file=environments/production/terraform.tfvars
-```
-
-## Ansible Configuration
-```bash
-# Deploy infrastructure
-ansible-playbook -i inventories/production playbooks/deploy.yml
-```
-
-## CI/CD
-- GitHub Actions workflows
-- Automated testing
-- Infrastructure validation
-- Deployment to Azure Kubernetes Service
-
-## Environment Configuration
-Create `.env` file with:
-- `TRADING_ECONOMICS_API_KEY`
-- `AZURE_SUBSCRIPTION_ID`
-- `AZURE_CLIENT_ID`
-- `AZURE_CLIENT_SECRET`
-
-## Security Considerations
-- Encrypted credentials
-- Minimal privilege principles
-- Infrastructure as Code (IaC)
-
-## Scaling
-- Horizontal Pod Autoscaler
-- Multi-replica deployments
-- Microservices architecture
+- Infrastructure: Azure, Terraform
+- Containerization: Docker
+- Orchestration: Kubernetes
+- Configuration Management: Ansible
 
 ## Contributing
 1. Fork repository
 2. Create feature branch
 3. Commit changes
-4. Push to branch
-5. Create Pull Request
+4. Push and create pull request
